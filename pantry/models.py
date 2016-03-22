@@ -9,6 +9,7 @@ import googlemaps
 
 import conf
 
+
 class BaseModel(models.Model):
     uuid = models.UUIDField(db_index=True, default=uuid4, editable=False)
     created_on = models.DateTimeField(auto_now_add=True)
