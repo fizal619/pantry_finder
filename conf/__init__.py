@@ -1,32 +1,29 @@
-import logging
 import os
 import json
 
-
-SETTINGS = {}
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-PATHS_TO_CONF = [
-    os.path.join(BASE_DIR, 'conf', 'local_settings.json'),
-    os.path.join(BASE_DIR, 'conf', 'settings.json')
+settings_directory = os.path.dirname(os.path.realpath(__file__))
+possible_paths = [
+    os.path.join(settings_directory, 'setting.json'),
+    os.path.join(settings_directory, 'default.json')
 ]
 
+config = None
 
-# for each possible path, try to open the file
-# if you can open the file, make it your settings file
-for path in PATHS_TO_CONF:
-    filename = path
-    try:
-        file_content = open(filename, 'r')
-    except IOError:
-        logging.error('File could not be found: {}'.format(filename))
-    try:
-        SETTINGS = json.loads(file_content.read())
-    except ValueError:
-        logging.error('No JSON object could be decoded.')
-    if SETTINGS:
+for file_path in possible_paths:
+    if not os.path.isfile(file_path):
+        continue
+
+    with open(file_path, 'r') as f:
+        file_data = f.read()
+        config = json.loads(file_data)
         break
 
+if not config:
+    raise SystemError('Invalid or missing config file')
+
+is_empty = lambda s: None if s == '' else s
+config = {k: is_empty(config[k]) for k in config}
+
+
 def get(key):
-    return SETTINGS.get(key, None)
+    return config[key]
