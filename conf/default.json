@@ -1,0 +1,6 @@
+{
+    "DATABASE_URL": "sqlite:///pantry_finder.sqlite",
+    "DEBUG": true,
+    "GOOGLE_GEOCODING_API_KEY": "",
+    "SECRET_KEY": "pantry_finder_default_o1c@g&o9bfd%!$ak8!b-l=!=db33tt2io0i_+)e5(2hla88pfv_unsafe"
+}
